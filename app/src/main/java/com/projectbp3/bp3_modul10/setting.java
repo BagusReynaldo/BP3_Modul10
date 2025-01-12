@@ -80,6 +80,32 @@ public class setting extends Fragment {
             startActivity(intent);
         });
 
+        // Klik event untuk Logout
+        RelativeLayout logout = view.findViewById(R.id.layout_logout);
+        logout.setOnClickListener(v -> {
+            // Tampilkan dialog konfirmasi
+            new AlertDialog.Builder(requireContext())
+                    .setTitle("Konfirmasi Logout")
+                    .setMessage("Apakah Anda yakin ingin logout?")
+                    .setPositiveButton("Ya", (dialog, which) -> {
+                        // Hapus username dari SharedPreferences
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.remove("username");
+                        editor.apply();
+
+                        // Kembali ke MainActivity
+                        Intent intent = new Intent(requireContext(), MainActivity.class);
+                        startActivity(intent);
+                        requireActivity().finish();
+                    })
+                    .setNegativeButton("Tidak", (dialog, which) -> {
+                        // Tutup dialog tanpa melakukan apa pun
+                        dialog.dismiss();
+                    })
+                    .create()
+                    .show();
+        });
+
         return view;
     }
 
